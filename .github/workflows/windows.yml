@@ -1,0 +1,28 @@
+name: Windows Build and Test
+
+on:
+  push:
+    paths:
+      - 'process_library/**'
+      - '.github/workflows/windows.yml'
+  pull_request:
+    paths:
+      - 'process_library/**'
+      - '.github/workflows/windows.yml'
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure project
+        run: cmake -S process_library -B process_library/build
+
+      - name: Build project
+        run: cmake --build process_library/build --config Release
+
+      - name: Run test
+        run: ./process_library/build/Release/test_process.exe
